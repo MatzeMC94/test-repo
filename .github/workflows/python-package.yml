@@ -1,4 +1,4 @@
-name: Python CI (Skripte ausführen)
+name: Python CI (run scripts)
 
 on:
   push:
@@ -14,36 +14,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Python einrichten
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Abhängigkeiten installieren (optional)
+      - name: Install dependencies (optional)
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Skripte ausführen (nur wenn vorhanden)
+      - name: Run scripts (if they exist)
         run: |
           set -e
           if [ -f hello.py ]; then echo "==> hello.py"; python hello.py; fi
           if [ -f login.py ]; then echo "==> login.py"; python login.py; fi
           if [ -f logout.py ]; then echo "==> logout.py"; python logout.py; fi
-
-      # Optional: Linting (falls du Flake8 nutzen willst)
-      # - name: Lint mit flake8 (optional)
-      #   run: |
-      #     python -m pip install flake8
-      #     flake8 .
-
-      # Optional: Tests starten, wenn es Tests gibt
-      - name: Tests mit pytest (optional)
-        run: |
-          if ls -1 test_*.py 2>/dev/null | grep -q .; then
-            python -m pip install pytest
-            pytest -q
-          else
-            echo "Keine Tests gefunden – Schritt übersprungen."
-          fi
-
